@@ -12,6 +12,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --cyclamen: #e86a92ff;
+  --picton-blue: #3da5d9ff;
+  --celadon: #acd8aaff;
+  --gunmetal: #2e3138ff;
+  --seasalt: #f7f7f9ff;
 }
 
 a {
