@@ -1,13 +1,11 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import UserForm from './components/UserForm'
 import UserInfo from './components/UserInfo'
-import ReposInfo from './components/ReposInfo'
-import OrgInfo from './components/OrgInfo'
+import ReposList from './components/ReposList'
+import OrgsList from './components/OrgsList'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -15,12 +13,10 @@ function App() {
   return (
     <>
       <Header />
-
-      <UserForm />
-      <UserInfo />
-      <ReposInfo />
-      <OrgInfo />
-      
+        <UserForm />
+        <UserInfo />
+        <ReposList />
+        <OrgsList />
       <Footer />
     </>
   )

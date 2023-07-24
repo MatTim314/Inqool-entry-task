@@ -3,8 +3,8 @@ import { Heading } from '@chakra-ui/react'
 
 function Header() {
   return (
-      <Heading>
-          <h1>GitHubGet</h1>
+    <Heading>
+        <h1>GitHubGet</h1>
     </Heading>
   )
 }
