@@ -6,20 +6,32 @@ import UserForm from './components/UserForm'
 import UserInfo from './components/UserInfo'
 import ReposList from './components/ReposList'
 import OrgsList from './components/OrgsList'
+import User from "./types/User";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [user, setUser] = useState({} as User);
+  const [options, setOptions] = useState({
+    listRepos: true,
+    listOrgs: true
+  });
 
   return (
     <>
       <Header />
-        <UserForm />
-        <UserInfo />
-        <ReposList />
-        <OrgsList />
+      <UserForm setUser={setUser} setOptions={setOptions} />
+      {user.username ? (
+        <>
+          <UserInfo user={user} />
+          {options.listRepos && <ReposList />}
+          {options.listOrgs && <OrgsList />}
+        </>
+      ) : (
+        "Search for a user"
+      )}
+
       <Footer />
     </>
-  )
+  );
 }
 
 export default App
