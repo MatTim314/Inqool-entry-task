@@ -1,9 +1,21 @@
+import { Avatar, Box, Heading, Text } from '@chakra-ui/react'
 import React from 'react'
+import User from '../types/User';
 
-function UserInfo() {
+interface MyComponentProps {
+  user: User;
+}
+
+function UserInfo({user} : MyComponentProps) {
   return (
-    <div>UserInfo</div>
-  )
+    <Box>
+      <Heading>{user.username}</Heading>
+      <Avatar src={user.avatar_url} />
+          <Text>Bio: {user.bio} </Text>
+          <Text>Followers: {user.followers} </Text>
+          <Text>Following: {user.following} </Text>
+    </Box>
+    )
 }
 
 export default UserInfo
