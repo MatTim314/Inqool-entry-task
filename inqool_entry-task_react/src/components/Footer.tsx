@@ -1,8 +1,11 @@
 import React from 'react'
+import { Divider } from "@chakra-ui/react";
 
 function Footer() {
   return (
-    <div>Footer</div>
+    <div>
+      <Divider />
+    </div>
   )
 }
 
