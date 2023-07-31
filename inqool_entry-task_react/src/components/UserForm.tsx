@@ -24,12 +24,13 @@ interface UserFormProps {
       listOrgs: boolean;
     }>
   >;
+  setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
 
 
 
-function UserForm({ setUser, setOptions } : UserFormProps) {
+function UserForm({ setUser, setOptions, setError } : UserFormProps) {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [checkedRepos, setCheckedRepos] = useState(false);
@@ -39,10 +40,35 @@ function UserForm({ setUser, setOptions } : UserFormProps) {
   async function fetchUser() {
     setLoading(true);
     setOptions({ listRepos: checkedRepos, listOrgs: checkedOrgs });
-    const user: User = await getUserData(username);
-    // TODO: Catch error
-    setLoading(false);
-    setUser(user);
+    await getUserData(username)
+      .then(
+        (user: User) => {
+          setUser(user);
+          setError('');
+        }
+      )
+      .catch(
+      (error : Error) => {
+          console.log(error.message);
+          setUser({} as User);
+          if (username === "") {
+            setError(
+              `Username cannot be empty.`
+            );
+          }
+          
+          if (error.message.includes("404")) {
+            setError(`Username does not exist.`); 
+          }
+          else {
+            setError(`User could not be fetched. Error: ${error.message}`);
+          }
+        })
+      .finally(
+        () => {
+          setLoading(false);
+        }
+      );
   }
 
 
@@ -79,7 +105,7 @@ function UserForm({ setUser, setOptions } : UserFormProps) {
           Search
         </Button>
       ) : (
-        <Button type="submit" onClick={fetchUser}>
+        <Button type="submit" onClick={fetchUser} onSubmit={fetchUser}>
           Search
         </Button>
       )}

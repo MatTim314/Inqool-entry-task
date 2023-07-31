@@ -10,6 +10,7 @@ import User from "./types/User";
 
 function App() {
   const [user, setUser] = useState({} as User);
+  const [error, setError] = useState('');
   const [options, setOptions] = useState({
     listRepos: true,
     listOrgs: true
@@ -18,7 +19,7 @@ function App() {
   return (
     <>
       <Header />
-      <UserForm setUser={setUser} setOptions={setOptions} />
+      <UserForm setUser={setUser} setOptions={setOptions} setError={setError} />
       {user.username ? (
         <>
           <UserInfo user={user} />
@@ -26,9 +27,9 @@ function App() {
           {options.listOrgs && <OrgsList />}
         </>
       ) : (
-        "Search for a user"
+           error  ? error : "Search for a user"
       )}
-
+      
       <Footer />
     </>
   );
