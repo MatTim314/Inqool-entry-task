@@ -12,8 +12,8 @@ export const getUserData = async (user: string): Promise<User> => {
     avatar_url: response.data.avatar_url,
     following: response.data.following,
     followers: response.data.followers,
-    url: response.data.url
-  }
+    url: response.data.html_url,
+  };
   console.log(returnUser);
   return returnUser;
 }
