@@ -1,26 +1,30 @@
 import React from 'react'
-import { List, ListItem } from '@chakra-ui/react'
-import Organization from './Organization';
+import { Avatar, Heading, list, List, ListItem, Text } from '@chakra-ui/react'
+import Organization from '../types/Organization';
 
 
-const orgs: string[] = [];
+interface MyComponentProps {
+  orgs: Organization[];
+}
 
-function getOrgs() {
+function OrganizationInfo(org: Organization) {
+  return (
+    <ListItem key={org.login}>
+      <Heading>{org.login}</Heading>
+      <Text>{org.description}</Text>
+      <Avatar src={org.avatar_url}></Avatar>
+    </ListItem>
+  );
   
 }
 
+function OrgsList({orgs} : MyComponentProps) {
+  const listItems = orgs.map((org) => OrganizationInfo(org));
 
-
-function OrgsList() {
-  const orgsList = orgs.map(org =>
-  <ListItem>
-    <Organization />
-  </ListItem>)
   
   return (
     <List>
-      <p>Orgs list</p>
-      {orgsList}
+      {listItems}
     </List>
   )
 }
