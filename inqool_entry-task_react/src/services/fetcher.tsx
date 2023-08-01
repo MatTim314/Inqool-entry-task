@@ -1,6 +1,7 @@
 
 import axiosInstance from "./base";
 import User from "../types/User";
+import Repository from "../types/Repository";
 
 export const getUserData = async (user: string): Promise<User> => {
   const response = await axiosInstance.get(`/users/${user}`);
@@ -19,6 +20,10 @@ export const getUserData = async (user: string): Promise<User> => {
 }
 
 
-export const getUserRepos = async () => { }
+export const getUserRepos = async (user: string): Promise<Repository[]> => {
+  const response = await axiosInstance.get(`/users/${user}/repos`);
+
+  return [];
+};
 
 export const getUserOrgs = async () => {};
