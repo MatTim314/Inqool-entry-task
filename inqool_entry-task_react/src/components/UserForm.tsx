@@ -11,13 +11,17 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { getUserData } from '../services/fetcher';
+import { getUserData, getUserOrgs, getUserRepos } from '../services/fetcher';
 import User from "../types/User";
+import Repository from "../types/Repository";
+import Organization from "../types/Organization";
 
 
 
 interface UserFormProps {
   setUser: React.Dispatch<React.SetStateAction<User>>;
+  setRepositories: React.Dispatch<React.SetStateAction<Repository[]>>;
+  setOrganizations: React.Dispatch<React.SetStateAction<Organization[]>>;
   setOptions: React.Dispatch<
     React.SetStateAction<{
       listRepos: boolean;
@@ -30,7 +34,7 @@ interface UserFormProps {
 
 
 
-function UserForm({ setUser, setOptions, setError } : UserFormProps) {
+function UserForm({ setUser, setRepositories, setOrganizations, setOptions, setError } : UserFormProps) {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [checkedRepos, setCheckedRepos] = useState(false);
@@ -41,34 +45,55 @@ function UserForm({ setUser, setOptions, setError } : UserFormProps) {
     setLoading(true);
     setOptions({ listRepos: checkedRepos, listOrgs: checkedOrgs });
     await getUserData(username)
-      .then(
-        (user: User) => {
-          setUser(user);
-          setError('');
+      .then((user: User) => {
+        setUser(user);
+        setError("");
+      })
+      .then(async () => {
+        if (checkedRepos) {
+          await getUserRepos(username)
+            .then((repositories: Repository[]) => {
+              setRepositories(repositories);
+            })
+            .catch((error: Error) => {
+              setError(
+                `Repositories could not be fetched. Error: ${error.message}`
+              );
+            });
         }
-      )
-      .catch(
-      (error : Error) => {
-          console.log(error.message);
-          setUser({} as User);
-          if (username === "") {
-            setError(
-              `Username cannot be empty.`
-            );
-          }
-          
-          if (error.message.includes("404")) {
-            setError(`Username does not exist.`); 
-          }
-          else {
-            setError(`User could not be fetched. Error: ${error.message}`);
-          }
-        })
-      .finally(
-        () => {
-          setLoading(false);
+      })
+      .then(async () => {
+        if (checkedOrgs) {
+          await getUserOrgs(username)
+            .then((organizations: Organization[]) => {
+              setOrganizations(organizations);
+            })
+            .catch((error: Error) => {
+              setError(
+                `Organizations could not be fetched. Error: ${error.message}`
+              );
+            });
         }
-      );
+      })
+      .catch((error: Error) => {
+        console.log(error.message);
+        setUser({} as User);
+        if (username === "") {
+          setError(`Username cannot be empty.`);
+        }
+
+        if (error.message.includes("404")) {
+          setError(`Username does not exist.`);
+        } else {
+          setError(`User could not be fetched. Error: ${error.message}`);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    
+    
   }
 
 
