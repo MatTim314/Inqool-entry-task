@@ -1,11 +1,10 @@
 export interface Repository {
-  empty: boolean;
-  username: string;
-  bio: string;
-  avatar_url: string;
-  following: number;
-  followers: number;
+  name: string;
+  description: string;
+  language: string;
+  updated_at: string;
   url: string;
+  ssh_url: string;
 }
 
 export default Repository;
