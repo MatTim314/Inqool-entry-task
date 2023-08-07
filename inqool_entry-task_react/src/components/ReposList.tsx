@@ -1,49 +1,45 @@
-import React, { useEffect, useState } from 'react'
-import { getUserRepos } from "../services/fetcher";
-import User from '../types/User';
-import Repository from '../types/Repository'
-import { Box, Heading, Link, Text, ListItem, List, Button, useClipboard, Card } from '@chakra-ui/react';
+import Repository from "../types/Repository";
+import {
+  Box,
+  Heading,
+  Link,
+  Text,
+  ListItem,
+  List,
+  Button,
+  Card,
+  Badge,
+  Tag,
+} from "@chakra-ui/react";
 
 interface MyComponentProps {
   repos: Repository[];
 }
 
-function RepositoryInfo(repo: Repository) {
-  const { onCopy, setValue, hasCopied } = useClipboard("");
-
-  useEffect(() => {
-    setValue(repo.ssh_url);
-  }, []);
-
-  let href : string = repo.url;
-  let description: string = repo.description ? `Description: ${repo.description}` : ""
-  let language: string = repo.language ? `Language: ${repo.language}` : ""
-  
-  return (
-      <ListItem key={repo.name}>
+function ReposList({ repos }: MyComponentProps) {
+  const listItems = repos.map((repo) => {
+    return (
+      <ListItem key={repo.name} pt='1rem'>
         <Card>
-          <Heading>
-            <Link href={href}>{repo.name}</Link>
+          <Heading size='lg'>
+            <Link href={repo.url}>{repo.name}</Link>
           </Heading>
-          <Text> {description} </Text>
+          <Text> {repo.description} </Text>
           <Text> Last update: {repo.updated_at}</Text>
-          <Text> {language} </Text>
-          <Button onClick={onCopy}> {hasCopied ? "Copied!" : "Clone"} </Button>
+          <Badge width='min-content'> {repo.language} </Badge>
+          <Button
+            onClick={() => {
+              navigator.clipboard.writeText(repo.ssh_url);
+            }}
+          >
+            Clone
+          </Button>
         </Card>
       </ListItem>
-  );
+    );
+  });
+
+  return <List>{listItems}</List>;
 }
 
-
-function ReposList({ repos }: MyComponentProps) {
-  
-  const listItems = repos.map((repo) => RepositoryInfo(repo));
-
-  return (
-    <List>
-      {listItems}
-    </List>
-  )
-}
-
-export default ReposList
+export default ReposList;

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Heading, list, List, ListItem, Text } from '@chakra-ui/react'
+import { Avatar, Card, Heading, list, List, ListItem, Text } from '@chakra-ui/react'
 import Organization from '../types/Organization';
 
 
@@ -10,9 +10,15 @@ interface MyComponentProps {
 function OrganizationInfo(org: Organization) {
   return (
     <ListItem key={org.login}>
-      <Heading>{org.login}</Heading>
+      <Card>
+      <Heading size='lg'>
+        <Avatar src={org.avatar_url}></Avatar>
+        {org.login}
+      </Heading>
       <Text>{org.description}</Text>
-      <Avatar src={org.avatar_url}></Avatar>
+
+        
+      </Card>
     </ListItem>
   );
   

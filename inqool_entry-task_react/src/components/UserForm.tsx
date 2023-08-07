@@ -9,6 +9,9 @@ import {
   Box,
   Flex,
   Button,
+  useColorMode,
+  useColorModeValue,
+  border
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { getUserData, getUserOrgs, getUserRepos } from '../services/fetcher';
@@ -39,6 +42,7 @@ function UserForm({ setUser, setRepositories, setOrganizations, setOptions, setE
   const [username, setUsername] = useState("");
   const [checkedRepos, setCheckedRepos] = useState(false);
   const [checkedOrgs, setCheckedOrgs] = useState(false);
+  const { toggleColorMode } = useColorMode();
 
 
   async function fetchUser() {
@@ -78,9 +82,10 @@ function UserForm({ setUser, setRepositories, setOrganizations, setOptions, setE
       .catch((error: Error) => {
         console.log(error.message);
         setUser({} as User);
-        if (username === "") {
+        if (username == "") {
           setError(`Username cannot be empty.`);
-        }
+          return;
+        } 
 
         if (error.message.includes("404")) {
           setError(`Username does not exist.`);
@@ -99,41 +104,53 @@ function UserForm({ setUser, setRepositories, setOrganizations, setOptions, setE
 
   return (
     <FormControl isRequired>
-      <FormLabel>Username</FormLabel>
-      <Input
-        type="text"
-        placeholder="Enter a username"
-        onChange={(event) => {
-          setUsername(event.target.value);
-        }}
-      ></Input>
+      <Flex direction="column" align="center" gap="1rem">
+        <Input
+          textAlign="center"
+          width="40%"
+          type="text"
+          placeholder="Enter a username"
+          onChange={(event) => {
+            setUsername(event.target.value);
+          }}
+        ></Input>
+        <Box>
+          <Flex direction="column">
+            <Checkbox
+              checked={checkedRepos}
+              size="lg"
+              spacing="1rem"
+              onChange={() => setCheckedRepos(!checkedRepos)}
+            >
+              List repositories
+            </Checkbox>
+            <Checkbox
+              checked={checkedOrgs}
+              size="lg"
+              spacing="1rem"
+              onChange={() => setCheckedOrgs(!checkedOrgs)}
+            >
+              List organizations
+            </Checkbox>
+          </Flex>
+        </Box>
 
-      <Checkbox
-        checked={checkedRepos}
-        size="lg"
-        spacing="1rem"
-        onChange={() => setCheckedRepos(!checkedRepos)}
-      >
-        List projects
-      </Checkbox>
-      <Checkbox
-        checked={checkedOrgs}
-        size="lg"
-        spacing="1rem"
-        onChange={() => setCheckedOrgs(!checkedOrgs)}
-      >
-        List organizations
-      </Checkbox>
-
-      {loading ? (
-        <Button isLoading type="submit" onClick={fetchUser}>
+        <Button
+          isLoading={loading}
+          type="submit"
+          onClick={fetchUser}
+          bg="picton_blue"
+          color='seasalt'
+          border='var(--picton-blue) 1px solid'
+          _hover={{
+            color: "picton_blue",
+            bg: useColorModeValue('white', 'gunmetal'),
+            border: "1px picton_blue solid"
+          }}
+        >
           Search
         </Button>
-      ) : (
-        <Button type="submit" onClick={fetchUser} onSubmit={fetchUser}>
-          Search
-        </Button>
-      )}
+      </Flex>
     </FormControl>
   );
 }
