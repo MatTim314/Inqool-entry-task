@@ -3,6 +3,7 @@ import axiosInstance from "./base";
 import User from "../types/User";
 import Repository from "../types/Repository";
 import Organization from "../types/Organization";
+import { AxiosResponse } from "axios";
 
 export const getUserData = async (user: string): Promise<User> => {
   const response = await axiosInstance.get(`/users/${user}`);
@@ -22,10 +23,23 @@ export const getUserData = async (user: string): Promise<User> => {
 
 export const getUserRepos = async (user: string): Promise<Repository[]> => {
   let repositories: Repository[] = [];
+  
+  const perPage = 30; // Number of repositories to fetch per page
+  let page : number = 1;
+  let fetchedRepos : Object[] = [];
+  let response : AxiosResponse;
 
-  let response = await axiosInstance.get(`/users/${user}/repos`);
+  do {
+    response = await axiosInstance.get(
+      `/users/${user}/repos?per_page=${perPage}&page=${page}`
+    );
+    fetchedRepos = fetchedRepos.concat(response.data);
+    page++;
+  } while (response.data.length === perPage);
 
-  let repos: Object[] = response.data;
+  
+
+  let repos: Object[] = fetchedRepos;
   repos.map((repo: any) => {
     const repository: Repository = {
       name: repo["name"],
