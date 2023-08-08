@@ -1,15 +1,17 @@
 import { Avatar, Box, Card, CardBody, CardHeader, Center, Flex, Grid, Heading, Stat, StatHelpText, StatLabel, StatNumber, Text } from '@chakra-ui/react'
 import React from 'react'
 import User from '../types/User';
+import Options from '../types/Options';
 import { Link } from "@chakra-ui/react";
 
 interface MyComponentProps {
   user: User;
   repCount: number;
   orgCount: number;
+  options: Options;
 }
 
-function UserInfo({ user, repCount = -1, orgCount = -1 }: MyComponentProps) {
+function UserInfo({ user, repCount, orgCount, options }: MyComponentProps) {
   
   let bio : string = user.bio && `Bio: ${user.bio}`;
   let href: string = user.url;
@@ -25,7 +27,7 @@ function UserInfo({ user, repCount = -1, orgCount = -1 }: MyComponentProps) {
           </Heading>
         </CardHeader>
         <CardBody>
-          <Text noOfLines={3}> {bio} </Text>
+          <Text noOfLines={3} mb="1rem"> {bio} </Text>
           <Grid templateColumns="repeat(2,1fr)" templateRows="repeat(2,1fr)">
             <Stat>
               <StatLabel>Followers</StatLabel>
@@ -35,13 +37,14 @@ function UserInfo({ user, repCount = -1, orgCount = -1 }: MyComponentProps) {
               <StatLabel>Following</StatLabel>
               <StatNumber>{user.following}</StatNumber>
             </Stat>
+            
             <Stat>
               <StatLabel>Repositories</StatLabel>
-              <StatNumber>{repCount > -1 ? repCount : "-"}</StatNumber>
+              <StatNumber>{options.listRepos && repCount || '-'}</StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Organizations</StatLabel>
-              <StatNumber>{orgCount > -1 ? orgCount : "-"}</StatNumber>
+              <StatNumber>{(options.listOrgs && orgCount) || '-'} </StatNumber>
             </Stat>
           </Grid>
         </CardBody>
