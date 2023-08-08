@@ -11,13 +11,17 @@ import {
   Button,
   useColorMode,
   useColorModeValue,
-  border
+  border,
+  Center
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { getUserData, getUserOrgs, getUserRepos } from '../services/fetcher';
 import User from "../types/User";
 import Repository from "../types/Repository";
 import Organization from "../types/Organization";
+import { useContext } from "react";
+import { OnlineContext } from "../contexts/OnlineContext";
+import { mockOrgsData, mockReposData, mockUser } from "../services/mockData";
 
 
 
@@ -43,11 +47,21 @@ function UserForm({ setUser, setRepositories, setOrganizations, setOptions, setE
   const [checkedRepos, setCheckedRepos] = useState(false);
   const [checkedOrgs, setCheckedOrgs] = useState(false);
   const { toggleColorMode } = useColorMode();
-
+  const onlineContext = useContext(OnlineContext);
 
   async function fetchUser() {
+    
     setLoading(true);
     setOptions({ listRepos: checkedRepos, listOrgs: checkedOrgs });
+
+    if (!onlineContext){
+      setUser(mockUser());
+      setRepositories(mockReposData());
+      setOrganizations(mockOrgsData());
+      setLoading(false);
+      return
+    }
+
     await getUserData(username)
       .then((user: User) => {
         setUser(user);
@@ -96,15 +110,14 @@ function UserForm({ setUser, setRepositories, setOrganizations, setOptions, setE
       .finally(() => {
         setLoading(false);
       });
-
-    
-    
   }
 
 
   return (
-    <FormControl isRequired>
       <Flex direction="column" align="center" gap="1rem">
+        <FormControl isRequired>
+        <Center>
+
         <Input
           textAlign="center"
           width="40%"
@@ -114,13 +127,15 @@ function UserForm({ setUser, setRepositories, setOrganizations, setOptions, setE
             setUsername(event.target.value);
           }}
         ></Input>
+        </Center>
+        </FormControl>
         <Box>
           <Flex direction="column">
             <Checkbox
               checked={checkedRepos}
               size="lg"
               spacing="1rem"
-              onChange={() => setCheckedRepos(!checkedRepos)}
+              onChange={() => setCheckedRepos(!checkedRepos)} // TODO: change to setOptions so the state gets updated correctly
             >
               List repositories
             </Checkbox>
@@ -136,22 +151,15 @@ function UserForm({ setUser, setRepositories, setOrganizations, setOptions, setE
         </Box>
 
         <Button
+        variant="solid"
           isLoading={loading}
           type="submit"
           onClick={fetchUser}
-          bg="picton_blue"
-          color='seasalt'
-          border='var(--picton-blue) 1px solid'
-          _hover={{
-            color: "picton_blue",
-            bg: useColorModeValue('white', 'gunmetal'),
-            border: "1px picton_blue solid"
-          }}
+          colorScheme="twitter"
         >
           Search
         </Button>
       </Flex>
-    </FormControl>
   );
 }
 
