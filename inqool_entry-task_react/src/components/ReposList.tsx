@@ -10,6 +10,8 @@ import {
   Card,
   Badge,
   Tag,
+  Center,
+  Flex
 } from "@chakra-ui/react";
 
 interface MyComponentProps {
@@ -19,21 +21,29 @@ interface MyComponentProps {
 function ReposList({ repos }: MyComponentProps) {
   const listItems = repos.map((repo) => {
     return (
-      <ListItem key={repo.name} pt='1rem'>
-        <Card>
+      <ListItem key={repo.name} pt='1rem' >
+        <Card p='1rem' _hover={{
+          outline: "1px var(--cyclamen) solid",
+      
+        }} >
+          <Flex direction="column" justify="center" align="center" gap='0.5rem'>
+
+
           <Heading size='lg'>
             <Link href={repo.url}>{repo.name}</Link>
           </Heading>
-          <Text> {repo.description} </Text>
+          <Text fontStyle='italic' textAlign='center'> {repo.description} </Text>
           <Text> Last update: {repo.updated_at}</Text>
-          <Badge width='min-content'> {repo.language} </Badge>
-          <Button
+          {repo.language &&           <Badge width='min-content' p='5px'> {repo.language} </Badge>
+}
+          <Button width='min-content' bgColor={"cyclamen"}
             onClick={() => {
               navigator.clipboard.writeText(repo.ssh_url);
             }}
           >
             Clone
           </Button>
+          </Flex>
         </Card>
       </ListItem>
     );
