@@ -5,8 +5,11 @@ import Repository from "../types/Repository";
 import Organization from "../types/Organization";
 import { AxiosResponse } from "axios";
 
+
+
+
 export const getUserData = async (user: string): Promise<User> => {
-  const response = await axiosInstance.get(`/users/${user}`);
+  const response : AxiosResponse = await axiosInstance.get(`/users/${user}`);
   
   const returnUser: User = {
     empty: false,
@@ -22,6 +25,7 @@ export const getUserData = async (user: string): Promise<User> => {
 
 
 export const getUserRepos = async (user: string): Promise<Repository[]> => {
+
   let repositories: Repository[] = [];
   
   const perPage = 30; // Number of repositories to fetch per page
@@ -61,7 +65,7 @@ export const getUserRepos = async (user: string): Promise<Repository[]> => {
   return repositories;
 };
 
-export const getUserOrgs = async (user: string): Promise<Organization[]> => {
+export const getUserOrgs = async (user: string): Promise<Organization[]> => {  
   let organizations: Organization[] = [];
 
   let response = await axiosInstance.get(`/users/${user}/orgs`);
@@ -71,7 +75,8 @@ export const getUserOrgs = async (user: string): Promise<Organization[]> => {
     const organization: Organization = {
       login: repo["login"],
       description: repo["description"],
-      avatar_url: repo["avatar_url"]
+      avatar_url: repo["avatar_url"],
+      html_url: `https://github.com/${repo["login"]}`
     };
 
     organizations.push(organization);
