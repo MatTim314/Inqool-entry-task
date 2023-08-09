@@ -1,8 +1,9 @@
-import { Avatar, Box, Card, CardBody, CardHeader, Center, Flex, Grid, Heading, Stat, StatHelpText, StatLabel, StatNumber, Text } from '@chakra-ui/react'
-import React from 'react'
+import { Avatar, Box, Card, CardBody, CardHeader, Center, Flex, Grid, GridItem, Heading, Stat, StatHelpText, StatLabel, StatNumber, Text } from '@chakra-ui/react'
+import React, { useContext } from 'react'
 import User from '../types/User';
 import Options from '../types/Options';
 import { Link } from "@chakra-ui/react";
+import { SelectedCardContext } from '../contexts/SelectedCardContext';
 
 interface MyComponentProps {
   user: User;
@@ -12,40 +13,60 @@ interface MyComponentProps {
 }
 
 function UserInfo({ user, repCount, orgCount, options }: MyComponentProps) {
-  
-  let bio : string = user.bio && `Bio: ${user.bio}`;
+
+  let bio: string = user.bio && `Bio: ${user.bio}`;
   let href: string = user.url;
+  let selectedCard = useContext(SelectedCardContext);
+  let outline = selectedCard.user == user ? '1px var(--picton-blue) solid' : ''
+
+
   return (
     <Center>
-      <Card width="25%" m="1rem">
+      <Card minW={20} shadow='md' _hover={{
+        outline: `1px var(--picton-blue) solid`,
+        cursor: 'pointer'
+      }}
+        outline={outline}
+      >
         <CardHeader>
-          <Heading>
+          <Heading >
             <Link href={href} isExternal>
-              <Avatar mr="1rem" src={user.avatar_url} />
-              {user.username}
+              <Flex direction='column' placeItems='center'>
+                <Avatar src={user.avatar_url} />
+                {user.username}
+
+              </Flex>
             </Link>
           </Heading>
         </CardHeader>
         <CardBody>
           <Text noOfLines={3} mb="1rem"> {bio} </Text>
           <Grid templateColumns="repeat(2,1fr)" templateRows="repeat(2,1fr)">
-            <Stat>
-              <StatLabel>Followers</StatLabel>
-              <StatNumber>{user.followers}</StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>Following</StatLabel>
-              <StatNumber>{user.following}</StatNumber>
-            </Stat>
-            
-            <Stat>
-              <StatLabel>Repositories</StatLabel>
-              <StatNumber>{options.listRepos && repCount || '-'}</StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>Organizations</StatLabel>
-              <StatNumber>{(options.listOrgs && orgCount) || '-'} </StatNumber>
-            </Stat>
+            <GridItem>
+              <Stat>
+                <StatLabel>Followers</StatLabel>
+                <StatNumber>{user.followers}</StatNumber>
+              </Stat>
+            </GridItem>
+            <GridItem>
+              <Stat>
+                <StatLabel>Following</StatLabel>
+                <StatNumber>{user.following}</StatNumber>
+              </Stat>
+            </GridItem>
+            <GridItem>
+              <Stat>
+                <StatLabel>Repositories</StatLabel>
+                <StatNumber>{user.public_repos_count}</StatNumber>
+              </Stat>
+            </GridItem>
+            <GridItem>
+
+              <Stat>
+                <StatLabel>Organizations</StatLabel>
+                <StatNumber>{user.orgs_count} </StatNumber>
+              </Stat>
+            </GridItem>
           </Grid>
         </CardBody>
       </Card>
