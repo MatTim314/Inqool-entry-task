@@ -10,7 +10,8 @@ import { AxiosResponse } from "axios";
 
 export const getUserData = async (user: string): Promise<User> => {
   const response : AxiosResponse = await axiosInstance.get(`/users/${user}`);
-  
+  const orgCount : AxiosResponse = await axiosInstance.get(`/users/${user}/orgs`);
+
   const returnUser: User = {
     empty: false,
     username: response.data.login,
@@ -18,6 +19,8 @@ export const getUserData = async (user: string): Promise<User> => {
     avatar_url: response.data.avatar_url,
     following: response.data.following,
     followers: response.data.followers,
+    public_repos_count: response.data.public_repos,
+    orgs_count: orgCount.data.length,
     url: response.data.html_url,
   };
   return returnUser;
