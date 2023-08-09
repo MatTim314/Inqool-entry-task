@@ -23,7 +23,7 @@ import { useContext } from "react";
 import { OnlineContext } from "../contexts/OnlineContext";
 import { mockOrgsData, mockReposData, mockUser } from "../services/mockData";
 import RecentSearch from "../types/RecentSearch";
-
+import { ErrorMessages } from "./ErrorMessages";
 
 
 interface UserFormProps {
@@ -57,7 +57,7 @@ function UserForm({ setUser, setError, searches, setSearches, setSelectedSearch 
 
   function handleClick(){
     if (searches.length > 0 && searches.find((search:RecentSearch): boolean => search.user.username.toUpperCase() == username.toUpperCase())){
-      alert("already in the list")
+      setError(ErrorMessages.userInRecent)
       return;
     }
     fetchUser();
@@ -99,10 +99,10 @@ function UserForm({ setUser, setError, searches, setSearches, setSelectedSearch 
               // setRepositories(repositories);
             })
             .catch((error: Error) => {
-              newSearch.error = `Repositories could not be fetched. Error: ${error.message}`
+              newSearch.error = `${ErrorMessages.reposUnknown} ${error.message}`
 
               setError(
-                `Repositories could not be fetched. Error: ${error.message}`
+                `${ErrorMessages.reposUnknown} ${error.message}`
               );
             });
         }
@@ -115,9 +115,9 @@ function UserForm({ setUser, setError, searches, setSearches, setSelectedSearch 
               // setOrganizations(organizations);
             })
             .catch((error: Error) => {
-              newSearch.error = `Organizations could not be fetched. Error: ${error.message}`
+              newSearch.error = `${ErrorMessages.orgsUnknown} ${error.message}`
               setError(
-                `Organizations could not be fetched. Error: ${error.message}`
+                `${ErrorMessages.orgsUnknown} ${error.message}`
               );
             });
         }
@@ -141,17 +141,17 @@ function UserForm({ setUser, setError, searches, setSearches, setSelectedSearch 
         console.log(error.message);
         setUser({} as User);
         if (username == "") {
-          newSearch.error = `Username cannot be empty.`;
+          newSearch.error = `${ErrorMessages.emptyUsername}`;
           // setError(`Username cannot be empty.`;
           return;
         }
 
         if (error.message.includes("404")) {
-          newSearch.error = `Username does not exist.`;
-          setError(`Username does not exist.`);
+          newSearch.error = ErrorMessages.noSuchUser;
+          setError(ErrorMessages.noSuchUser);
         } else {
-          newSearch.error = `User could not be fetched. Error: ${error.message}`;
-          setError(`User could not be fetched. Error: ${error.message}`);
+          newSearch.error = `${ErrorMessages.userUnknown} ${error.message}`;
+          setError(`${ErrorMessages.userUnknown} ${error.message}`);
         }
       })
       .finally(() => {
