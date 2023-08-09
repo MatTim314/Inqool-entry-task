@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, Context } from 'react'
+import { useState, useContext, createContext, Context, useEffect } from 'react'
 import './App.css'
 
 // Components
@@ -17,6 +17,7 @@ import RecentSearch from './types/RecentSearch'
 
 // Contexts
 import { OnlineContext } from './contexts/OnlineContext'
+import { SelectedCardContext } from './contexts/SelectedCardContext'
 
 // UI
 import {
@@ -37,6 +38,8 @@ import {
   Grid,
   GridItem,
   Heading,
+  List,
+  ListItem,
   Skeleton,
   Spacer,
   Stat,
@@ -46,6 +49,9 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { ThemeContext } from '@emotion/react'
+import { ReactJSXElement } from '@emotion/react/types/jsx-namespace'
+import RecentSearchesCards from './components/RecentSearchesCards'
+import ErrorNotification from './components/ErrorNotification'
 
 function App() {
   const [online, setOnline] = useState(true);
@@ -53,6 +59,7 @@ function App() {
   const [recentSearches, setRecentSearches] = useState([] as RecentSearch[])
   // TODO: Move user, repos, orgs into a single search and derive information from that
   const [user, setUser] = useState({} as User);
+  const [selectedSearch, setSelectedSearch] = useState({} as RecentSearch);
   const [repositories, setRepositories] = useState([] as Repository[])
   const [organizations, setOrganizatons] = useState([] as Organization[])
   const [error, setError] = useState('');
@@ -63,13 +70,18 @@ function App() {
   });
 
   let gridItems: number = Number(options.listOrgs) + Number(options.listRepos);
-  let gridSize: string = `repeat(${gridItems}, 1fr)`;  
-
+  let gridSize: string = `repeat(${gridItems}, 1fr)`;
+  
 
   return (
-    <OnlineContext.Provider value={online}>
-
+    <OnlineContext.Provider value={online}> 
       <Box>
+        {selectedSearch.user ? 
+          `Selected user: ${selectedSearch.user.username}`
+          :
+          `No selected user`
+        }
+        
         <Header />
         <Button pos="absolute" top="4rem" right="1rem" onClick={() => {setOnline(!online)}}>
           {online ? "online" : "offline"}
@@ -77,25 +89,39 @@ function App() {
         <Button pos="absolute" top="1rem" right="1rem" onClick={toggleColorMode}>
           {colorMode === "light" ? "🌑" : "☀"}
         </Button>
+        
         <UserForm
           setUser={setUser}
           setOptions={setOptions}
           setError={setError}
           setRepositories={setRepositories}
           setOrganizations={setOrganizatons}
+
+          searches={recentSearches}
+          setSearches={setRecentSearches}
+          setSelectedSearch={setSelectedSearch}
         />
-        <Divider p='10px'/>
-        {user.username ? (
+
+
+        {error && <ErrorNotification error={error}/>}
+
+        {recentSearches.length > 0 &&
+        <>
+        <Divider mt={3}/>
+        <Center>
+          <Heading size="lg" color="picton_blue" m='2rem'>
+            Recent searches
+          </Heading>
+        </Center>
+        <SelectedCardContext.Provider value={selectedSearch}>
+          <RecentSearchesCards recentSearches={recentSearches} setSelectedSearch={setSelectedSearch}/>
+        </SelectedCardContext.Provider>
+        </>
+      }
+
+      <Divider m={5} />
+        {recentSearches.length > 0 ? (
           <>
-            <UserInfo
-              user={user}
-              repCount={repositories.length}
-              orgCount={organizations.length}
-              options={options}
-            />
-            <Center>
-              
-            </Center>
             <Grid templateColumns = {gridSize} gap={6} justifyItems='center'>
               <GridItem>
                 
@@ -124,25 +150,9 @@ function App() {
               </GridItem>
             </Grid>
           </>
-        ) : error ? (
-          <Center>
-            <Alert
-              status="error"
-              w="50%"
-              variant="subtle"
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="center"
-              textAlign="center"
-            >
-              <AlertIcon />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          </Center>
-        ) : (
+        ) : 
           ""
-        )}
+        }
       </Box>
 
       <Footer />
