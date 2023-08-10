@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  FormControl,
-  Input,
-  Flex,
-  Button,
-  Center,
-} from "@chakra-ui/react";
+import { FormControl, Input, Flex, Button, Center } from "@chakra-ui/react";
 import { useState } from "react";
 import { getUserData, getUserOrgs, getUserRepos } from "../services/fetcher";
 import User from "../types/User";
@@ -71,27 +65,27 @@ function UserForm({
         setError("");
       })
       .then(async () => {
-          await getUserRepos(username)
-            .then((repositories: Repository[]) => {
-              newSearch.repositories = repositories;
-              // setRepositories(repositories);
-            })
-            .catch((error: Error) => {
-              newSearch.error = `${ErrorMessages.reposUnknown} ${error.message}`;
+        await getUserRepos(username)
+          .then((repositories: Repository[]) => {
+            newSearch.repositories = repositories;
+            // setRepositories(repositories);
+          })
+          .catch((error: Error) => {
+            newSearch.error = `${ErrorMessages.reposUnknown} ${error.message}`;
 
-              setError(`${ErrorMessages.reposUnknown} ${error.message}`);
-            });
+            setError(`${ErrorMessages.reposUnknown} ${error.message}`);
+          });
       })
       .then(async () => {
-          await getUserOrgs(username)
-            .then((organizations: Organization[]) => {
-              newSearch.organizations = organizations;
-              // setOrganizations(organizations);
-            })
-            .catch((error: Error) => {
-              newSearch.error = `${ErrorMessages.orgsUnknown} ${error.message}`;
-              setError(`${ErrorMessages.orgsUnknown} ${error.message}`);
-            });
+        await getUserOrgs(username)
+          .then((organizations: Organization[]) => {
+            newSearch.organizations = organizations;
+            // setOrganizations(organizations);
+          })
+          .catch((error: Error) => {
+            newSearch.error = `${ErrorMessages.orgsUnknown} ${error.message}`;
+            setError(`${ErrorMessages.orgsUnknown} ${error.message}`);
+          });
       })
       .then(() => {
         if (searches.length > 4) {

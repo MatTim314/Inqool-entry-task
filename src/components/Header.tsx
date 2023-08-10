@@ -1,4 +1,4 @@
-import { Center, Heading, Highlight } from '@chakra-ui/react'
+import { Center, Heading, Highlight } from "@chakra-ui/react";
 
 function Header() {
   return (
@@ -6,7 +6,13 @@ function Header() {
       <Heading size="4xl" pb="2rem">
         <Highlight
           query={["GET"]}
-          styles={{ px: "2", py: "2", rounded: "5px", bg: "var(--picton-blue)", color: "white" }}
+          styles={{
+            px: "2",
+            py: "2",
+            rounded: "5px",
+            bg: "var(--picton-blue)",
+            color: "white",
+          }}
         >
           GitHubGET
         </Highlight>
@@ -15,4 +21,4 @@ function Header() {
   );
 }
 
-export default Header
+export default Header;

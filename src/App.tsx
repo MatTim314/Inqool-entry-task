@@ -50,7 +50,8 @@ function App() {
   const { colorMode, toggleColorMode } = useColorMode();
   const [options, setOptions] = useState({} as Options);
 
-  const gridItems: number = Number(options.listOrgs) + Number(options.listRepos);
+  const gridItems: number =
+    Number(options.listOrgs) + Number(options.listRepos);
   const gridSize: string = `repeat(${gridItems}, 1fr)`;
 
   return (

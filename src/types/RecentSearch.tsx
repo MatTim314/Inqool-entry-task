@@ -4,12 +4,11 @@ import Repository from "./Repository";
 import User from "./User";
 
 export interface RecentSearch {
-    user: User,
-    repositories: Repository[],
-    organizations: Organization[],
-    options: Options,
-    error: string
-  }
-  
-  export default RecentSearch;
-  
+  user: User;
+  repositories: Repository[];
+  organizations: Organization[];
+  options: Options;
+  error: string;
+}
+
+export default RecentSearch;

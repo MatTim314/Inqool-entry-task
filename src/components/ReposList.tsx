@@ -20,9 +20,9 @@ interface MyComponentProps {
 function ReposList({ repos }: MyComponentProps) {
   const listItems = repos.map((repo) => {
     return (
-      <ListItem key={repo.name} p='1rem'>
+      <ListItem key={repo.name} p="1rem">
         <Card
-          boxShadow='lg'
+          boxShadow="lg"
           maxWidth="50vw"
           position="relative"
           p="1rem"
@@ -55,7 +55,9 @@ function ReposList({ repos }: MyComponentProps) {
                 width="min-content"
                 _hover={{ bgColor: "cyclamen", color: "seasalt" }}
                 onClick={() => {
-                  navigator.clipboard.writeText(repo.ssh_url || "No link available");
+                  navigator.clipboard.writeText(
+                    repo.ssh_url || "No link available"
+                  );
                 }}
               />
             </Tooltip>

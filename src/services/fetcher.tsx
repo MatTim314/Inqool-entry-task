@@ -31,7 +31,8 @@ export const getUserData = async (user: string): Promise<User> => {
 };
 
 export const getUserRepos = async (user: string): Promise<Repository[]> => {
-  type RepositoryListResponse = Endpoints["GET /users/{username}/repos"]["response"]["data"];
+  type RepositoryListResponse =
+    Endpoints["GET /users/{username}/repos"]["response"]["data"];
 
   const repositories: Repository[] = [];
 
@@ -56,7 +57,7 @@ export const getUserRepos = async (user: string): Promise<Repository[]> => {
           ssh_url: repo.ssh_url,
         };
         repository.name = repository.name.toUpperCase();
-        if(repository.updated_at){
+        if (repository.updated_at) {
           const date = new Date(repository.updated_at);
           repository.updated_at = date.toLocaleDateString();
           if (date.toLocaleDateString() == new Date().toLocaleDateString()) {
@@ -72,13 +73,15 @@ export const getUserRepos = async (user: string): Promise<Repository[]> => {
   return repositories;
 };
 
-
 export const getUserOrgs = async (user: string): Promise<Organization[]> => {
-  type OrgsListResponse = Endpoints["GET /users/{username}/orgs"]["response"]["data"]
+  type OrgsListResponse =
+    Endpoints["GET /users/{username}/orgs"]["response"]["data"];
 
   const organizations: Organization[] = [];
 
-  const response = await axiosInstance.get<OrgsListResponse>(`/users/${user}/orgs`);
+  const response = await axiosInstance.get<OrgsListResponse>(
+    `/users/${user}/orgs`
+  );
 
   const orgs: OrgsListResponse = response.data;
   orgs.map((repo) => {
@@ -88,7 +91,6 @@ export const getUserOrgs = async (user: string): Promise<Organization[]> => {
       avatar_url: repo["avatar_url"],
       html_url: `https://github.com/${repo["login"]}`,
     };
-
 
     organizations.push(organization);
   });
