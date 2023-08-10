@@ -1,5 +1,4 @@
 import { Center, Alert, AlertIcon, AlertTitle, AlertDescription, SlideFade } from '@chakra-ui/react';
-import { useState } from 'react';
 
 interface ErrorNotificationProps{
   error: string

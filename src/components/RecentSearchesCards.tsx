@@ -1,6 +1,6 @@
 import * as React from 'react';
 import RecentSearch from '../types/RecentSearch';
-import { Box, Fade, GridItem, HStack, List, ListItem, SimpleGrid } from '@chakra-ui/react';
+import { Fade, GridItem, SimpleGrid } from '@chakra-ui/react';
 import UserInfo from './UserInfo';
 
 interface ComponentProps{

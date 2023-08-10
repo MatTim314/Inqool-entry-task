@@ -1,10 +1,10 @@
 export interface Repository {
   name: string;
-  description: string;
-  language: string;
-  updated_at: string;
-  url: string;
-  ssh_url: string;
+  description: string | null;
+  language: string | null | undefined;
+  updated_at: string | null | undefined;
+  url: string | null;
+  ssh_url: string | undefined;
 }
 
 export default Repository;

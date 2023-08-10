@@ -1,19 +1,10 @@
 import React from "react";
 import {
-  Checkbox,
   FormControl,
-  FormLabel,
-  FormHelperText,
   Input,
-  VStack,
-  Box,
   Flex,
   Button,
-  useColorMode,
-  useColorModeValue,
-  border,
   Center,
-  Tooltip,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { getUserData, getUserOrgs, getUserRepos } from "../services/fetcher";
@@ -25,19 +16,8 @@ import { OnlineContext } from "../contexts/OnlineContext";
 import { mockOrgsData, mockReposData, mockUser } from "../services/mockData";
 import RecentSearch from "../types/RecentSearch";
 import { ErrorMessages } from "./ErrorMessages";
-import Options from "../types/Options";
 
 interface UserFormProps {
-  setUser: React.Dispatch<React.SetStateAction<User>>;
-  setRepositories: React.Dispatch<React.SetStateAction<Repository[]>>;
-  setOrganizations: React.Dispatch<React.SetStateAction<Organization[]>>;
-  setOptions: React.Dispatch<
-    React.SetStateAction<{
-      listRepos: boolean;
-      listOrgs: boolean;
-    }>
-  >;
-  options: Options;
   setError: React.Dispatch<React.SetStateAction<string>>;
 
   searches: RecentSearch[];
@@ -46,9 +26,6 @@ interface UserFormProps {
 }
 
 function UserForm({
-  setUser,
-  setOptions,
-  options,
   setError,
   searches,
   setSearches,
@@ -56,9 +33,6 @@ function UserForm({
 }: UserFormProps) {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
-  const [checkedRepos, setCheckedRepos] = useState(true);
-  const [checkedOrgs, setCheckedOrgs] = useState(true);
-  const { toggleColorMode } = useColorMode();
   const onlineContext = useContext(OnlineContext);
 
   function handleSubmit() {
@@ -76,20 +50,15 @@ function UserForm({
   }
 
   async function fetchUser() {
-    let newSearch = {} as RecentSearch;
+    const newSearch = {} as RecentSearch;
 
     setLoading(true);
-    //setOptions({ listRepos: checkedRepos, listOrgs: checkedOrgs });
-    newSearch.options = { listOrgs: checkedOrgs, listRepos: checkedRepos };
 
     if (!onlineContext) {
       newSearch.user = mockUser();
       newSearch.repositories = mockReposData();
       newSearch.organizations = mockOrgsData();
 
-      //setUser(mockUser());
-      //setRepositories(mockReposData());
-      //setOrganizations(mockOrgsData());
       setLoading(false);
       return;
     }
@@ -99,11 +68,9 @@ function UserForm({
         newSearch.user = user;
         newSearch.error = "";
 
-        //setUser(user);
         setError("");
       })
       .then(async () => {
-        if (checkedRepos) {
           await getUserRepos(username)
             .then((repositories: Repository[]) => {
               newSearch.repositories = repositories;
@@ -114,10 +81,8 @@ function UserForm({
 
               setError(`${ErrorMessages.reposUnknown} ${error.message}`);
             });
-        }
       })
       .then(async () => {
-        if (checkedOrgs) {
           await getUserOrgs(username)
             .then((organizations: Organization[]) => {
               newSearch.organizations = organizations;
@@ -127,7 +92,6 @@ function UserForm({
               newSearch.error = `${ErrorMessages.orgsUnknown} ${error.message}`;
               setError(`${ErrorMessages.orgsUnknown} ${error.message}`);
             });
-        }
       })
       .then(() => {
         if (searches.length > 4) {
@@ -138,7 +102,6 @@ function UserForm({
       })
       .catch((error: Error) => {
         console.log(error.message);
-        setUser({} as User);
         if (username == "") {
           newSearch.error = `${ErrorMessages.emptyUsername}`;
           // setError(`Username cannot be empty.`;

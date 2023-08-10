@@ -1,17 +1,13 @@
 import { CopyIcon } from "@chakra-ui/icons";
 import Repository from "../types/Repository";
 import {
-  Box,
   Heading,
   Link,
   Text,
   ListItem,
   List,
-  Button,
   Card,
   Badge,
-  Tag,
-  Center,
   Flex,
   IconButton,
   Tooltip,
@@ -24,8 +20,10 @@ interface MyComponentProps {
 function ReposList({ repos }: MyComponentProps) {
   const listItems = repos.map((repo) => {
     return (
-      <ListItem key={repo.name} p="1rem">
+      <ListItem key={repo.name} p='1rem'>
         <Card
+          boxShadow='lg'
+          maxWidth="50vw"
           position="relative"
           p="1rem"
           _hover={{
@@ -34,7 +32,7 @@ function ReposList({ repos }: MyComponentProps) {
         >
           <Flex direction="column" justify="center" align="center" gap="0.5rem">
             <Heading size="md">
-              <Link href={repo.url}>{repo.name}</Link>
+              <Link href={repo.url || ""}>{repo.name}</Link>
             </Heading>
             <Text fontStyle="italic" textAlign="center">
               {" "}
@@ -57,7 +55,7 @@ function ReposList({ repos }: MyComponentProps) {
                 width="min-content"
                 _hover={{ bgColor: "cyclamen", color: "seasalt" }}
                 onClick={() => {
-                  navigator.clipboard.writeText(repo.ssh_url);
+                  navigator.clipboard.writeText(repo.ssh_url || "No link available");
                 }}
               />
             </Tooltip>

@@ -1,5 +1,4 @@
-import React from 'react'
-import { Avatar, Card, Flex, Heading, Link, list, List, ListItem, Text } from '@chakra-ui/react'
+import { Avatar, Card, Flex, Heading, Link, List, ListItem, Text } from '@chakra-ui/react'
 import Organization from '../types/Organization';
 
 
@@ -11,6 +10,7 @@ function OrganizationInfo(org: Organization) {
   return (
     <ListItem key={org.login} p='1rem'>
       <Card 
+      boxShadow='lg'
       p='1rem'
       _hover={{
           outline: "1px var(--celadon) solid",

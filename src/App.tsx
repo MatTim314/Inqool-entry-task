@@ -1,18 +1,14 @@
-import { useState, useContext, createContext, Context, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 
 // Components
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import UserForm from "./components/UserForm";
-import UserInfo from "./components/UserInfo";
 import ReposList from "./components/ReposList";
 import OrgsList from "./components/OrgsList";
 
 // Types
-import User from "./types/User";
-import Repository from "./types/Repository";
-import Organization from "./types/Organization";
 import RecentSearch from "./types/RecentSearch";
 
 // Contexts
@@ -27,7 +23,6 @@ import {
   Checkbox,
   Collapse,
   Divider,
-  Fade,
   Flex,
   Grid,
   GridItem,
@@ -37,8 +32,6 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Text,
-  Tooltip,
   useColorMode,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, DeleteIcon } from "@chakra-ui/icons";
@@ -52,16 +45,13 @@ function App() {
 
   const [recentSearches, setRecentSearches] = useState([] as RecentSearch[]);
   // TODO: Move user, repos, orgs into a single search and derive information from that
-  const [user, setUser] = useState({} as User);
   const [selectedSearch, setSelectedSearch] = useState({} as RecentSearch);
-  const [repositories, setRepositories] = useState([] as Repository[]);
-  const [organizations, setOrganizatons] = useState([] as Organization[]);
   const [error, setError] = useState("");
   const { colorMode, toggleColorMode } = useColorMode();
   const [options, setOptions] = useState({} as Options);
 
-  let gridItems: number = Number(options.listOrgs) + Number(options.listRepos);
-  let gridSize: string = `repeat(${gridItems}, 1fr)`;
+  const gridItems: number = Number(options.listOrgs) + Number(options.listRepos);
+  const gridSize: string = `repeat(${gridItems}, 1fr)`;
 
   return (
     <OnlineContext.Provider value={online}>
@@ -89,12 +79,7 @@ function App() {
         </Button>
 
         <UserForm
-          setUser={setUser}
-          options={options}
-          setOptions={setOptions}
           setError={setError}
-          setRepositories={setRepositories}
-          setOrganizations={setOrganizatons}
           searches={recentSearches}
           setSearches={setRecentSearches}
           setSelectedSearch={setSelectedSearch}

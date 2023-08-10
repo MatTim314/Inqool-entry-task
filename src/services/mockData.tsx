@@ -1,16 +1,17 @@
-import { keyframes } from "@emotion/react";
 import Repository from "../types/Repository";
 import User from "../types/User";
 import Organization from "../types/Organization";
 
 export function mockUser() : User{
-    let user : User = {
+    const user : User = {
         empty: false,
         username: "Mock",
         bio: "Racism is a sick joke. Why would I hate people of other colors. I simply hate the dumbshit ones.",
         avatar_url: "",
         following: 12,
         followers: 8,
+        public_repos_count: 2,
+        orgs_count: 2,
         url: ""
     }
     return user
@@ -42,12 +43,14 @@ export function mockOrgsData() : Organization[]{
         {
             login: "Cool org dot com",
             description: "We are cool, what more you want ahole",
-            avatar_url: ""
+            avatar_url: "",
+            html_url:""
         },
         {
             login: "Not so cool org",
             description: "Shell company for slovak politicians",
-            avatar_url: ""
+            avatar_url: "",
+            html_url: ""
         }
     ]
 }

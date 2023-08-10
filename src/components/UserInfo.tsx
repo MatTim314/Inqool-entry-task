@@ -1,7 +1,6 @@
-import { Avatar, Box, Card, CardBody, CardHeader, Center, Flex, Grid, GridItem, Heading, Stat, StatHelpText, StatLabel, StatNumber, Text } from '@chakra-ui/react'
-import React, { useContext } from 'react'
+import { Avatar, Card, CardBody, CardHeader, Center, Flex, Grid, GridItem, Heading, Stat, StatLabel, StatNumber, Text } from '@chakra-ui/react'
+import { useContext } from 'react'
 import User from '../types/User';
-import Options from '../types/Options';
 import { Link } from "@chakra-ui/react";
 import { SelectedCardContext } from '../contexts/SelectedCardContext';
 
@@ -11,10 +10,10 @@ interface MyComponentProps {
 
 function UserInfo({ user }: MyComponentProps) {
 
-  let bio: string = user.bio && `Bio: ${user.bio}`;
-  let href: string = user.url;
-  let selectedCard = useContext(SelectedCardContext);
-  let outline = selectedCard.user == user ? '1px var(--picton-blue) solid' : ''
+  const bio: string = user.bio && `Bio: ${user.bio}`;
+  const href: string = user.url;
+  const selectedCard = useContext(SelectedCardContext);
+  const outline = selectedCard.user == user ? '1px var(--picton-blue) solid' : ''
 
 
   return (
