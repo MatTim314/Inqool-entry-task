@@ -12,10 +12,11 @@ import {
   useColorMode,
   useColorModeValue,
   border,
-  Center
+  Center,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { getUserData, getUserOrgs, getUserRepos } from '../services/fetcher';
+import { getUserData, getUserOrgs, getUserRepos } from "../services/fetcher";
 import User from "../types/User";
 import Repository from "../types/Repository";
 import Organization from "../types/Organization";
@@ -24,7 +25,7 @@ import { OnlineContext } from "../contexts/OnlineContext";
 import { mockOrgsData, mockReposData, mockUser } from "../services/mockData";
 import RecentSearch from "../types/RecentSearch";
 import { ErrorMessages } from "./ErrorMessages";
-
+import Options from "../types/Options";
 
 interface UserFormProps {
   setUser: React.Dispatch<React.SetStateAction<User>>;
@@ -36,35 +37,45 @@ interface UserFormProps {
       listOrgs: boolean;
     }>
   >;
+  options: Options;
   setError: React.Dispatch<React.SetStateAction<string>>;
 
   searches: RecentSearch[];
   setSearches: React.Dispatch<React.SetStateAction<RecentSearch[]>>;
-  setSelectedSearch: React.Dispatch<React.SetStateAction<RecentSearch>>
+  setSelectedSearch: React.Dispatch<React.SetStateAction<RecentSearch>>;
 }
 
-
-
-
-function UserForm({ setUser, setError, searches, setSearches, setSelectedSearch }: UserFormProps) {
+function UserForm({
+  setUser,
+  setOptions,
+  options,
+  setError,
+  searches,
+  setSearches,
+  setSelectedSearch,
+}: UserFormProps) {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
-  const [checkedRepos, setCheckedRepos] = useState(false);
-  const [checkedOrgs, setCheckedOrgs] = useState(false);
+  const [checkedRepos, setCheckedRepos] = useState(true);
+  const [checkedOrgs, setCheckedOrgs] = useState(true);
   const { toggleColorMode } = useColorMode();
   const onlineContext = useContext(OnlineContext);
 
-
-  function handleClick(){
-    if (searches.length > 0 && searches.find((search:RecentSearch): boolean => search.user.username.toUpperCase() == username.toUpperCase())){
-      setError(ErrorMessages.userInRecent)
+  function handleSubmit() {
+    if (
+      searches.length > 0 &&
+      searches.find(
+        (search: RecentSearch): boolean =>
+          search.user.username.toUpperCase() == username.toUpperCase()
+      )
+    ) {
+      setError(ErrorMessages.userInRecent);
       return;
     }
     fetchUser();
   }
-  
-  async function fetchUser() {
 
+  async function fetchUser() {
     let newSearch = {} as RecentSearch;
 
     setLoading(true);
@@ -80,7 +91,7 @@ function UserForm({ setUser, setError, searches, setSearches, setSelectedSearch 
       //setRepositories(mockReposData());
       //setOrganizations(mockOrgsData());
       setLoading(false);
-      return
+      return;
     }
 
     await getUserData(username)
@@ -99,11 +110,9 @@ function UserForm({ setUser, setError, searches, setSearches, setSelectedSearch 
               // setRepositories(repositories);
             })
             .catch((error: Error) => {
-              newSearch.error = `${ErrorMessages.reposUnknown} ${error.message}`
+              newSearch.error = `${ErrorMessages.reposUnknown} ${error.message}`;
 
-              setError(
-                `${ErrorMessages.reposUnknown} ${error.message}`
-              );
+              setError(`${ErrorMessages.reposUnknown} ${error.message}`);
             });
         }
       })
@@ -115,26 +124,16 @@ function UserForm({ setUser, setError, searches, setSearches, setSelectedSearch 
               // setOrganizations(organizations);
             })
             .catch((error: Error) => {
-              newSearch.error = `${ErrorMessages.orgsUnknown} ${error.message}`
-              setError(
-                `${ErrorMessages.orgsUnknown} ${error.message}`
-              );
+              newSearch.error = `${ErrorMessages.orgsUnknown} ${error.message}`;
+              setError(`${ErrorMessages.orgsUnknown} ${error.message}`);
             });
         }
       })
       .then(() => {
         if (searches.length > 4) {
-          setSearches(
-            [newSearch,
-              ...searches
-            ].slice(0,5)
-          )
-        }else{
-          setSearches(
-            [newSearch,
-              ...searches
-            ]
-          )
+          setSearches([newSearch, ...searches].slice(0, 5));
+        } else {
+          setSearches([newSearch, ...searches]);
         }
       })
       .catch((error: Error) => {
@@ -155,16 +154,13 @@ function UserForm({ setUser, setError, searches, setSearches, setSelectedSearch 
         }
       })
       .finally(() => {
-        setTimeout(
-          () => {
-            setError("")
-          }, 5000
-        )
+        setTimeout(() => {
+          setError("");
+        }, 5000);
         setSelectedSearch(newSearch);
         setLoading(false);
       });
   }
-
 
   return (
     <Flex direction="column" align="center" gap="1rem">
@@ -178,6 +174,11 @@ function UserForm({ setUser, setError, searches, setSearches, setSelectedSearch 
             onChange={(event) => {
               setUsername(event.target.value);
             }}
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                handleSubmit();
+              }
+            }}
           ></Input>
         </Center>
       </FormControl>
@@ -185,32 +186,11 @@ function UserForm({ setUser, setError, searches, setSearches, setSelectedSearch 
         variant="solid"
         isLoading={loading}
         type="submit"
-        onClick={handleClick}
+        onClick={handleSubmit}
         colorScheme="twitter"
       >
         Search
       </Button>
-      <Box>
-        <Flex direction="column">
-          <Checkbox
-            checked={checkedRepos}
-            size="lg"
-            spacing="1rem"
-            onChange={() => setCheckedRepos(!checkedRepos)} // TODO: change to setOptions so the state gets updated correctly
-          >
-            List repositories
-          </Checkbox>
-          <Checkbox
-            checked={checkedOrgs}
-            size="lg"
-            spacing="1rem"
-            onChange={() => setCheckedOrgs(!checkedOrgs)}
-          >
-            List organizations
-          </Checkbox>
-        </Flex>
-      </Box>
-
     </Flex>
   );
 }
