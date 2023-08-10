@@ -1,11 +1,15 @@
 import React from 'react'
-import { Divider, Text } from "@chakra-ui/react";
+import { Center, Divider, Link, Text } from "@chakra-ui/react";
 
 function Footer() {
   return (
-    <footer>
-      <Divider></Divider>
-    </footer>
+      <>
+      <Center mt='60vh'>
+        <Text color="gray.200">
+        Created by <Link href='https://www.linkedin.com/in/matej-tim%C3%A1r-88a7691b4/'>me.</Link>
+        </Text>
+      </Center>
+      </>
   )
 }
 

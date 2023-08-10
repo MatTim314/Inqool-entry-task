@@ -1,6 +1,6 @@
 import * as React from 'react';
 import RecentSearch from '../types/RecentSearch';
-import { Box, GridItem, HStack, List, ListItem, SimpleGrid } from '@chakra-ui/react';
+import { Box, Fade, GridItem, HStack, List, ListItem, SimpleGrid } from '@chakra-ui/react';
 import UserInfo from './UserInfo';
 
 interface ComponentProps{
@@ -14,12 +14,11 @@ function RecentSearchesCards({recentSearches, setSelectedSearch} : ComponentProp
     const searchesGrid = recentSearches.map(
         (search : RecentSearch) =>
           <GridItem key={search.user.username} onClick={() => setSelectedSearch(search)}>
+            <Fade in={true}>
               <UserInfo     
                 user={search.user}
-                repCount={search.user.followers}
-                orgCount={search.user.followers}
-                options={search.options}
               />
+            </Fade>
           </GridItem>
         )
 

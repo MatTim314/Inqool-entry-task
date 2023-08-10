@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Card, Heading, Link, list, List, ListItem, Text } from '@chakra-ui/react'
+import { Avatar, Card, Flex, Heading, Link, list, List, ListItem, Text } from '@chakra-ui/react'
 import Organization from '../types/Organization';
 
 
@@ -9,20 +9,29 @@ interface MyComponentProps {
 
 function OrganizationInfo(org: Organization) {
   return (
-    <ListItem key={org.login}>
-      <Card p="1rem" _hover={{
+    <ListItem key={org.login} p='1rem'>
+      <Card 
+      p='1rem'
+      _hover={{
           outline: "1px var(--celadon) solid",
       
         }}>
+      <Flex direction="column" justify="center" align="center" gap='1rem'>
       <Heading size='lg'>
         <Link href={org.html_url}>
-        <Avatar src={org.avatar_url}></Avatar>
-          {org.login}
+          <Flex direction='row' gap='1rem' align='center'>
+            <Avatar src={org.avatar_url}></Avatar>
+            <Text>
+              {org.login}
+            </Text>
+          </Flex>
         </Link>
       </Heading>
+      {org.description && 
       <Text>{org.description}</Text>
+      }
 
-        
+     </Flex>   
       </Card>
     </ListItem>
   );
@@ -34,7 +43,7 @@ function OrgsList({orgs} : MyComponentProps) {
 
   
   return (
-    <List>
+    <List spacing={2}>
       {listItems}
     </List>
   )

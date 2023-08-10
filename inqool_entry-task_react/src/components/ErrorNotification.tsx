@@ -1,4 +1,4 @@
-import { Center, Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/react';
+import { Center, Alert, AlertIcon, AlertTitle, AlertDescription, SlideFade } from '@chakra-ui/react';
 import { useState } from 'react';
 
 interface ErrorNotificationProps{
@@ -7,19 +7,22 @@ interface ErrorNotificationProps{
 
 function ErrorNotification( {error} : ErrorNotificationProps) {
     return <Center>
-    <Alert
-      status="error"
-      w="35%"
-      variant="subtle"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      textAlign="center"
-    >
-      <AlertIcon />
-      <AlertTitle>Error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
+      <SlideFade in={true}>
+        <Alert
+        status="error"
+        variant="subtle"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        textAlign="center"
+        borderRadius='lg'
+        mt='1rem'
+        >
+        <AlertIcon />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      </SlideFade>
   </Center>;
 }
 

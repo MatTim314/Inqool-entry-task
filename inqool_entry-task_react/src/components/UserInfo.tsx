@@ -7,12 +7,9 @@ import { SelectedCardContext } from '../contexts/SelectedCardContext';
 
 interface MyComponentProps {
   user: User;
-  repCount: number;
-  orgCount: number;
-  options: Options;
 }
 
-function UserInfo({ user, repCount, orgCount, options }: MyComponentProps) {
+function UserInfo({ user }: MyComponentProps) {
 
   let bio: string = user.bio && `Bio: ${user.bio}`;
   let href: string = user.url;
