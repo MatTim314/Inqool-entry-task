@@ -1,27 +1,31 @@
-# React + TypeScript + Vite
+# GitHubGET (Inqool front-end entry task) 
+GitHubGET is a small project which allows you to get information about a GitHub user along with the list of his repositories and also organizations in a visually pleasing way. Built with Vite+React+Chakra-UI+Typescript it offers simple yet elegant design along with code maintainability. Project could still very well be extended to offer additional features such as sorting repositories, faster fetching, adding more information about users and so on.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Site is deployed at: https://inqool-interview-task.netlify.app/
 
-Currently, two official plugins are available:
+## Tools used:
+- Code editing:
+  - VS Code
+  - Vim plugin, (yes I am one of those guys)
+- Linters/Formatters:
+  - Eslint
+  - Prettier VS code extension, I personally dont mind the aggresive style of Prettier
+- Styling:
+  - [Coolors](https://coolors.co/) for creating a color pallete
+  - Chakra UI icons
+  - Figma for wireframing (along with pen and paper)
+- Code techstack:
+  - Axios for requests
+  - Chakra UI as a component library, they are missing a carousel but wcyd
+  - React for reactivity))
+  - Typescript for maintaining sanity when debugging
+- APIs:
+   - [Hoppscotch.io](https://hoppscotch.io/)
+- Deployment:
+  - [Netlify](https://www.netlify.com/)
+- Build:
+   - [Vite](https://vitejs.dev/)
+- Package manager:
+  - NPM
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
