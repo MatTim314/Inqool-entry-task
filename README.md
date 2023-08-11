@@ -2,6 +2,7 @@
 GitHubGET is a small project which allows you to get information about a GitHub user along with the list of his repositories and also organizations in a visually pleasing way. Built with Vite+React+Chakra-UI+Typescript it offers simple yet elegant design along with code maintainability. Project could still very well be extended to offer additional features such as sorting repositories, faster fetching, adding more information about users and so on.
 
 Original task from: https://github.com/grygy/inqool-react-interview
+
 Site is deployed at: https://inqool-interview-task.netlify.app/
 
 ## Tools used:
