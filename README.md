@@ -28,5 +28,7 @@ GitHubGET is a small project which allows you to get information about a GitHub 
    - [Vite](https://vitejs.dev/)
 - Package manager:
   - NPM
+- Task tracking:
+  - Trello
 
 
